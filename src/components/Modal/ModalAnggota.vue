@@ -8,6 +8,7 @@ export default {
       email: "",
       no_hp: "",
       nik: "",
+      level: ""
     };
   },
   props: {
@@ -38,6 +39,7 @@ export default {
       data.append("email", this.email);
       data.append("no_hp", this.no_hp);
       data.append("nik", this.nik);
+      data.append("level", this.level);
       let config = {
         header: {
           "Content-Type": "image/png",
@@ -59,6 +61,7 @@ export default {
       data.append("no_hp", this.no_hp);
       data.append("nik", this.nik);
       data.append("id", this.data.id);
+      data.append("level", this.level);
       let config = {
         header: {
           "Content-Type": "image/png",
@@ -79,6 +82,7 @@ export default {
       this.email = this.data.email;
       this.no_hp = this.data.no_hp;
       this.nik = this.data.nik;
+      this.level = this.data.level=='anggota'?'1':'2';
     }
   },
 };
@@ -163,6 +167,20 @@ export default {
                 />
               </div>
             </div>
+            <div class="form-group row">
+              <label for="staticEmail" class="col-sm-2 col-form-label"
+                >Jabatan</label
+              >
+              <div class="col-sm-9">
+              <select
+                  class="form-control"
+                  v-model="level">
+                <option disabled value="">Silahkan Piliha salah satu</option>
+                <option value="1">Anggota</option>
+                <option value="2">Admin</option>
+              </select>
+              </div>
+            </div>
           </slot>
         </section>
 
@@ -181,7 +199,7 @@ export default {
   </transition>
 </template>
 
-<style>
+<style scoped>
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -196,7 +214,7 @@ export default {
 
 .modal {
   position: relative;
-  height: 400px;
+  height: 500px;
   width: 50%;
   margin: auto;
   background: #ffffff;

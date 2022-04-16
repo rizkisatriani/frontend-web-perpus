@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-xl-3 col-md-6">
           <stats-card>
             <div slot="header" class="icon-warning">
@@ -62,8 +62,8 @@
           </stats-card>
         </div>
 
-      </div>
-      <div class="row">
+      </div> -->
+      <!-- <div class="row">
         <div class="col-md-8">
           <chart-card :chart-data="lineChart.data"
                       :chart-options="lineChart.options"
@@ -105,9 +105,9 @@
             </template>
           </chart-card>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-6">
           <chart-card
             :chart-data="barChart.data"
@@ -165,7 +165,7 @@
           </card>
 
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

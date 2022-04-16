@@ -10,7 +10,7 @@
       <div class="justify-content-center row">
         <div class="col-md-12">
           <vue-table-dynamic :params="params">
-            <template v-slot:column-5="{ props }">
+            <template v-slot:column-6="{ props }">
               <span class="cell--slot-2 d-flex">
                 <button
                   class="btn btn-fill btn-success btn-xs lg-6 mr-1"
@@ -25,6 +25,25 @@
                   @click.stop="Delate(props)"
                 >
                   Delete
+                </button>
+              </span>
+            </template>
+            <template v-slot:column-7="{ props }">
+              <span class="cell--slot-2 d-flex">
+                <button
+                  v-if="props.rowData[6].data=='null'"
+                  class="btn btn-fill btn-warning btn-xs lg-6 mr-1"
+                  size="mini"
+                  @click.stop="ACC(props)"
+                >
+                  ACC
+                </button>
+                <button
+                v-else
+                  class="btn btn-fill btn-success btn-xs lg-6"
+                  size="mini"
+                >
+                  Terverifikasi
                 </button>
               </span>
             </template>
@@ -68,8 +87,8 @@ export default {
           { column: 0, width: "5%" },
           { column: 1, width: "20%" },
           { column: 2, width: "20%" },
-          { column: 3, width: "20%" },
-          { column: 4, width: "20%" },
+          { column: 3, width: "10%" },
+          { column: 4, width: "10%" },
           { column: 5, width: "10%" },
         ],
         height: 500,
@@ -103,8 +122,10 @@ export default {
             `name`,
             `email`,
             `no_hp`,
+            `Level`,
             `nik`,
             `Action`,
+            `Verifikasi`,
           ]);
           for (let i = 0; i < res.data.data.length; i++) {
             this.params.data.push([
@@ -112,8 +133,10 @@ export default {
               `${res.data.data[i].name}`,
               `${res.data.data[i].email}`,
               `${res.data.data[i].no_hp}`,
+              `${res.data.data[i].level===1?'Anggota':'Admin'}`,
               `${res.data.data[i].nik}`,
               `${res.data.data[i].id}`,
+              `${res.data.data[i].verified_at}`,
             ]);
           }
         })
@@ -128,7 +151,8 @@ export default {
         name: slotData.rowData[1].data,
         email: slotData.rowData[2].data,
         no_hp: slotData.rowData[3].data,
-        nik: slotData.rowData[4].data,
+        nik: slotData.rowData[5].data,
+        level: slotData.rowData[4].data,
       };
 
       this.isModalVisible = true;
@@ -143,6 +167,21 @@ export default {
         },
       };
       axios.post(URL, data, config).then((response) => {
+        this.getData();
+      });
+    },
+    ACC(slotData) {
+        const URL = `${BASE_URL}/api/accMobile`;
+        let FData = new FormData();
+        FData.append("id", slotData.rowData[5].data);
+        FData.append("admin_id", 0);
+        FData.append("type", 'anggota');
+      let config = {
+        header: {
+          "Content-Type": "image/png",
+        },
+      };
+      axios.post(URL, FData, config).then((response) => {
         this.getData();
       });
     },

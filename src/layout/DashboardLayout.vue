@@ -10,19 +10,23 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>User Profile</p>
       </sidebar-link> -->
-      <sidebar-link to="/admin/Buku">
+      <sidebar-link v-if="user.level===2" to="/admin/Buku">
         <i class="nc-icon nc-notes"></i>
         <p>Buku</p>
       </sidebar-link>
-      <sidebar-link to="/admin/Anggota">
+      <sidebar-link v-if="user.level===2" to="/admin/Anggota">
         <i class="nc-icon nc-circle-09"></i>
         <p>Anggota</p>
       </sidebar-link>
-      <sidebar-link to="/admin/Peminjaman">
+      <sidebar-link v-if="user.level===2" to="/admin/Peminjaman">
         <i class="nc-icon nc-cart-simple"></i>
         <p>Pinjaman</p>
       </sidebar-link>
-      <sidebar-link to="/admin/Pengembalian">
+      <sidebar-link v-if="user.level===1" to="/admin/PeminjamanAnggota">
+        <i class="nc-icon nc-cart-simple"></i>
+        <p>Pinjaman</p>
+      </sidebar-link>
+      <sidebar-link   to="/admin/Pengembalian">
         <i class="nc-icon nc-time-alarm"></i>
         <p>Pengembalian</p>
       </sidebar-link>
@@ -64,6 +68,13 @@
       ContentFooter,
       DashboardContent,
       MobileMenu
+    },
+    computed:{
+      user(){
+
+      const admin=JSON.parse(localStorage.getItem("login"));
+        return admin.data;
+      }
     },
     methods: {
       toggleSidebar () {

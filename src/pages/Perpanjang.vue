@@ -1,12 +1,6 @@
 <template>
   <div class="content">
     <div class="container-fluid">
-      <router-link
-        class="btn btn-fill btn-sm btn-primary"
-        to="/admin/BuatPeminjaman"
-      >
-        Buat Peminjaman
-      </router-link>
       <div class="justify-content-center row">
         <div class="col-md-12">
           <vue-table-dynamic :params="params">
@@ -78,6 +72,12 @@ export default {
   components: {
     Modal,
   },
+    computed:{
+      user(){
+      const admin=JSON.parse(localStorage.getItem("login"));
+        return admin.data;
+      }
+    },
   mounted() {
     this.getData();
   },
@@ -89,7 +89,7 @@ export default {
     getData() {
       axios({
         method: "get",
-        url: `${BASE_URL}/api/getPeminjaman`,
+        url: `${BASE_URL}/api/getPeminjaman?isPerpanjang=true&isAdmin=${this.user.level===2?true:false}`,
       })
         .then(async (res) => {
           this.params.data = [];
@@ -127,7 +127,9 @@ export default {
       const URL = `${BASE_URL}/api/perpanjang`;
       let data = new FormData();
       data.append("id", slotData.rowData[8].data);
+      if(this.user.level===2){
       data.append("admin", admin.data.id);
+      }
       axios.post(URL, data ).then((response) => {
         this.getData();
         alert(response.data.message);

@@ -1,17 +1,31 @@
 <template>
   <div class="content">
     <div class="container-fluid">
+      <router-link
+        v-if="user.level===2"
+        class="btn btn-fill btn-sm btn-primary"
+        to="/admin/BuatPeminjaman"
+      >
+        Buat Peminjaman
+      </router-link>
+      <router-link
+      v-if="user.level===1"
+        class="btn btn-fill btn-sm btn-primary"
+        to="/admin/BuatPeminjamanAnggota"
+      >
+        Buat Peminjaman Anggota
+      </router-link>
       <div class="justify-content-center row">
         <div class="col-md-12">
           <vue-table-dynamic :params="params">
             <template v-slot:column-8="{ props }">
               <span class="cell--slot-2 d-flex">
                 <button
-                  class="btn btn-fill btn-success btn-xs lg-6 mr-1"
+                :class="[classStatus(props.rowData[8].data)]"
+                  class="btn btn-fill btn-xs lg-6"
                   size="mini"
-                  @click.stop="Edit(props)"
                 >
-                  Pengembalian Buku
+                  {{textStatus(props.rowData[8].data)}}
                 </button>
               </span>
             </template>
@@ -24,7 +38,7 @@
 </template>
 <script>
 import axios from "axios";
-import Modal from "src/components/Modal/ModalPinjamDetil.vue";
+import Modal from "src/components/Modal/ModalAnggota.vue";
 import { BASE_URL } from "src/globalVariable.js";
 export default {
   data() {
@@ -80,6 +94,38 @@ export default {
     this.getData();
   },
   methods: {
+    classStatus(status){
+      switch (status) {
+        case "0":
+        return 'btn-danger';
+          break;
+        case "1":
+       return 'btn-info';
+          break;
+        case "2":
+        return 'btn-success';
+          break;
+        default:
+        return 'btn-warning';
+          break;
+      }
+    },
+    textStatus(status){
+      switch (status) {
+        case "0":
+        return 'Pending';
+          break;
+        case "1":
+        return 'Sudah di acc';
+          break;
+        case "2":
+        return 'Sudah di acc dan di perpajang';
+          break;
+        default:
+        return 'Sudah di kembalikan';
+          break;
+      }
+    },
     closeModal() {
       this.getData();
       this.isModalVisible = false;
@@ -87,7 +133,7 @@ export default {
     getData() {
       axios({
         method: "get",
-        url: `${BASE_URL}/api/getPeminjaman?isKembali=true&isAdmin=${this.user.level===2?true:false}`,
+        url: `${BASE_URL}/api/getPeminjaman?id=${this.user.id}`,
       })
         .then(async (res) => {
           this.params.data = [];
@@ -100,9 +146,19 @@ export default {
             `Nik Admin`,
             `Tanggal Pinjam`,
             `No Peminjaman`,
-            `Action`,
+            `Status`,
           ]);
           for (let i = 0; i < res.data.data.length; i++) {
+           let statusPeminjaman=0;
+           if(res.data.data[i].peminjaman!=='-'){
+            statusPeminjaman=1;
+           }else if(res.data.data[i].perpanjang!=='-'
+           &&res.data.data[i].pengembalia==='-'){
+            statusPeminjaman=2;
+           }else if(res.data.data[i].perpanjang!=='-'
+           &&res.data.data[i].pengembalia!=='-'){
+            statusPeminjaman=3;
+           }
             this.params.data.push([
               i + 1,
               `${res.data.data[i].name}`,
@@ -112,7 +168,7 @@ export default {
               `${res.data.data[i].peminjam_nik}`,
               `${res.data.data[i].tanggal_pinjam}`,
               `${res.data.data[i].id}`,
-              `${res.data.data[i].id}`,
+              `${statusPeminjaman}`,
             ]);
           }
         })
@@ -120,29 +176,22 @@ export default {
           console.log(e);
         });
     },
-    Edit(slotData) {
-      this.dataModal = {
-        type: "edit",
-        id: slotData.rowData[7].data,
-        name: slotData.rowData[1].data,
-        email: slotData.rowData[2].data,
-        no_hp: slotData.rowData[3].data,
-        nik: slotData.rowData[4].data,
-      };
-
-      this.isModalVisible = true;
-    },
-    Delate(slotData) {
-      const URL = `${BASE_URL}/api/deleteAnggota`;
+    Acc(slotData) {
+      if(slotData.rowData[8].data!=='-'){
+        return false;
+      }
+      const peminjam = JSON.parse(localStorage.getItem("login"));
+     const URL = `${BASE_URL}/api/AccPinjam`;
       let data = new FormData();
-      data.append("id", slotData.rowData[5].data);
+      data.append("peminjam", peminjam.data.id);
+      data.append("id", slotData.rowData[7].data);
       let config = {
         header: {
           "Content-Type": "image/png",
         },
       };
       axios.post(URL, data, config).then((response) => {
-        this.getData();
+      this.getData()
       });
     },
     Add() {

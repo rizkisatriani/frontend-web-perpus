@@ -78,7 +78,9 @@ export default {
       const URL = BASE_URL + "/api/pengembalian";
       let data = new FormData();
       data.append("id", this.data.id);
+      if(admin.level===2){
       data.append("admin", admin.data.id);
+      }
       data.append("denda", this.denda);
       axios.post(URL, data ).then((response) => {
         this.$emit("close");

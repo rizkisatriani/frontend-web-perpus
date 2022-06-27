@@ -36,15 +36,9 @@
                 />
               </div>
               <div class="form-group">
-                <input
-                  type="checkbox"
-                  name="remember-me"
-                  id="remember-me"
-                  class="agree-term"
-                />
-                <label for="remember-me" class="label-agree-term"
-                  ><span><span></span></span>Remember me</label
-                >
+                <input type="checkbox"
+                  @click="showPass()"
+                  >Tampilan password
               </div>
               <div class="form-group form-button">
                 <div
@@ -80,6 +74,7 @@ export default {
     return {
       nik: "",
       password: "",
+      showpass:false,
     };
   },
   created() {
@@ -89,7 +84,6 @@ export default {
   },
   methods:{
     login(){
-
       let data = new FormData();
       data.append("nik", this.nik);
       data.append("password", this.password);
@@ -102,6 +96,14 @@ export default {
         .catch((e) => {
          alert('data user yang anda pakai salah')
         });
+    },
+    showPass(){
+      var x = document.getElementById("your_pass");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
     }
   }
 };

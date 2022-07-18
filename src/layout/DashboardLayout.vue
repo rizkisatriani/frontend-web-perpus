@@ -14,6 +14,10 @@
         <i class="nc-icon nc-notes"></i>
         <p>Buku</p>
       </sidebar-link>
+      <sidebar-link v-if="user.level===2" to="/admin/ListRequest">
+        <i class="nc-icon nc-cart-simple"></i>
+        <p>List Request</p>
+      </sidebar-link>
       <sidebar-link v-if="user.level===2" to="/admin/Anggota">
         <i class="nc-icon nc-circle-09"></i>
         <p>Anggota</p>
@@ -25,6 +29,10 @@
       <sidebar-link v-if="user.level===1" to="/admin/PeminjamanAnggota">
         <i class="nc-icon nc-cart-simple"></i>
         <p>Pinjaman</p>
+      </sidebar-link>
+      <sidebar-link v-if="user.level===1" to="/admin/RequestBuku">
+        <i class="nc-icon nc-cart-simple"></i>
+        <p>Request Buku</p>
       </sidebar-link>
       <sidebar-link   to="/admin/Pengembalian">
         <i class="nc-icon nc-time-alarm"></i>

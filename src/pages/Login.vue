@@ -7,7 +7,7 @@
             <figure>
               <img src="@/assets/images/signup-image.jpg" alt="sing up image" />
             </figure>
-            <a href="#" class="signup-image-link">Create an account</a>
+            <router-link to="/register" class="signup-image-link">Buat akun</router-link>
           </div>
 
           <div class="signin-form">

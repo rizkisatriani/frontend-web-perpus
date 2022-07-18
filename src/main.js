@@ -31,6 +31,7 @@ Vue.use(VueTableDynamic);
 
 // configure router
 const router = new VueRouter({
+  mode: 'history',
   routes, // short for routes: routes
   linkActiveClass: 'nav-item active',
   scrollBehavior: (to) => {

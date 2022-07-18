@@ -6,12 +6,15 @@ import NotFound from '../pages/NotFoundPage.vue'
 import Overview from 'src/pages/Overview.vue'
 import Buku from 'src/pages/Buku.vue'
 import Login from 'src/pages/Login.vue'
+import Register from 'src/pages/Register.vue'
 import Anggota from 'src/pages/Anggota.vue'
 import Peminjaman from 'src/pages/Peminjaman.vue'
 import PeminjamanAnggota from 'src/pages/PeminjamanAnggota.vue'
 import Perpanjang from 'src/pages/Perpanjang.vue'
 import Pengembalian from 'src/pages/Pengembalian.vue'
 import BuatPeminjaman from 'src/pages/BuatPeminjaman.vue'
+import RequestBuku from 'src/pages/RequestBuku.vue'
+import ListRequest from 'src/pages/ListRequest.vue'
 import BuatPeminjamanAnggota from 'src/pages/BuatPeminjamanAnggota.vue'
 import UserProfile from 'src/pages/UserProfile.vue'
 import TableList from 'src/pages/TableList.vue'
@@ -28,6 +31,11 @@ const routes = [
     component: Login,
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+  },
+  {
     path: '/',
     component: DashboardLayout,
     redirect: '/login'
@@ -41,6 +49,16 @@ const routes = [
         path: 'overview',
         name: 'Overview',
         component: Overview
+      },
+      {
+        path: 'RequestBuku',
+        name: 'RequestBuku',
+        component: RequestBuku
+      },
+      {
+        path: 'ListRequest',
+        name: 'ListRequest',
+        component: ListRequest
       },
       {
         path: 'login',
